@@ -14,3 +14,7 @@
 	--return if heading==left && (see notes)
    --collide_right?
    --etc.
+
+function collide_platforms(body, platforms)
+
+end

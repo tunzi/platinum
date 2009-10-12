@@ -24,3 +24,17 @@ w = {
 	     end
 	  end,
 }
+
+-- These filter the w.lines into the 3 primary collision types
+function get_walls()
+end
+
+function get_platforms()
+end
+
+function get_slopes()
+end
+
+w.walls = get_walls()
+w.platforms = get_platforms()
+w.slopes = get_slopes()
