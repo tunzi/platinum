@@ -36,9 +36,8 @@ function update(dt)
    input()
 
    p:update(dt)
-
-   --p.collidewall()
-
+   message = "("..p.x..", "..p.y..")"
+   
 end
 
 

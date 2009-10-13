@@ -11,9 +11,9 @@ w = {
 
    lines = {
    -- A horizontal line
-   {0, 0, 10, 0},
+   {10, 5, 20, 5},
    -- A vertical line
-   {10, 0, 10, 10}, 
+   {10, 5, 10, 20}, 
 },
 
 
@@ -26,15 +26,39 @@ w = {
 }
 
 -- These filter the w.lines into the 3 primary collision types
-function get_walls()
+function get_walls(lines)
+   result = {}
+   for i, w in ipairs(lines) do
+      -- If the X of both points is the same
+      if w[1] == w[3] then
+	 table.insert(result, w)
+      end
+   end
+   return result
 end
 
-function get_platforms()
+function get_platforms(lines)
+   result = {}
+   for i, w in ipairs(lines) do
+      -- If the Y of both points is the same
+      if w[2] == w[4] then
+	 table.insert(result, w)
+      end
+   end
+   return result
 end
 
-function get_slopes()
+function get_slopes(lines)
+   result = {}
+   for i, w in ipairs(lines) do
+      -- If the X and Y of both points are different
+      if (not w[1] == w[3]) and (not w[2] == w[4]) then
+	 table.insert(result, w)
+      end
+   end
+   return result
 end
 
-w.walls = get_walls()
-w.platforms = get_platforms()
-w.slopes = get_slopes()
+w.walls = get_walls(w.lines)
+w.platforms = get_platforms(w.lines)
+w.slopes = get_slopes(w.lines)
