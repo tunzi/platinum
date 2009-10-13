@@ -11,6 +11,7 @@ function draw_Y(y) return love.graphics.getHeight() - y*Pixels_Per_Unit end
 -- Global Objects
 require("box.lua")
 require("player.lua")  -- defines "p", the main player object
+require("world.lua")
 
 -- Main Procs
 require("input.lua")
@@ -35,9 +36,8 @@ function update(dt)
    input()
 
    p:update(dt)
-
-   --p.collidewall()
-
+   message = "("..p.x..", "..p.y..")"
+   
 end
 
 
@@ -46,5 +46,6 @@ function draw()
    love.graphics.draw(message, 100, 100)
 
    p:draw()
+   w:draw()
 end 
 
