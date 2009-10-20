@@ -9,16 +9,7 @@
 -- Check collide with every object?
    -- Maintain list of active objects?
 
--- def collide?
-   --collide_left?
-	--return if heading==left && (see notes)
-   --collide_right?
-   --etc.
-
--- The top bottom, right, left collide functions do need
--- to be further constrained (they use infinite lines currently)
-
--- A further cavet is that these functions will move body so that
+-- One cavet is that these functions will move body so that
 -- it is perfectly aligned with what it hits
 
 -- Also note the necessity of >= instead of > for edge cases
@@ -26,12 +17,15 @@
 
 -- Bug: get stuck on corners with collide_bottom
 
+-- IDEA: ADD state variable to test MAINTAINED collision within these
+-- does this require "closures"?
 
+---- PLATFORMS ----
 function collide_bottom(body, bottom)
-   if body.dy >= 0 then return false end
+   if body.v_y > 0 then return false end
    if not (body:R() <= bottom[1]) and
       not (body:L() >= bottom[3]) and
-      (bottom[2] > body:B()) and 
+      (bottom[2] >= body:B()) and 
       (body:B() >= (bottom[2] + body.dy)) then -- dy is NEGATIVE!!!!
       body.y = bottom[2]
       return true
@@ -39,37 +33,12 @@ function collide_bottom(body, bottom)
 end
 
 function collide_top(body, top)
-   if body.dy <= 0 then return false end
+   if body.v_y < 0 then return false end
    if not (body:R() <= top[1]) and
       not (body:L() >= top[3]) and
-      (top[2] < body:T()) and 
+      (top[2] <= body:T()) and 
       (body:T() <= (top[2] + body.dy)) then
-      body.y = top[2] - body.height      
-      return true
-   end
-end
-
-
-function collide_left(body, wall)
-   if body.dx > 0 then return false end
--- probably need a get-top, get-bottom for walls, etc....
-   if not (body:T() <= wall[2]) and
-      not (body:B() >= wall[4]) and
-      (wall[1] > body:L()) and 
-      (body:L() >= (wall[1] + body.dx)) then -- dx is NEGATIVE!!!!
-      body.x = wall[1] + body.width/2
-      return true
-   end
-end
-
-
-function collide_right(body, wall)
-   if body.dx < 0 then return false end
-   if not (body:T() <= wall[2]) and
-      not (body:B() >= wall[4]) and
-      (wall[1] < body:R()) and 
-      (body:R() <= (wall[1] + body.dx)) then
-      body.x = wall[1] - body.width/2
+      if not (body.dy == 0) then body.y = top[2] - body.height end
       return true
    end
 end
@@ -84,6 +53,31 @@ function collide_platforms(body, platforms)
    end
 end
 
+---- WALLS ----
+function collide_left(body, wall)
+   if body.v_x > 0 then return false end
+-- probably need a get-top, get-bottom for walls, etc....
+   if not (body:T() <= wall[2]) and
+      not (body:B() >= wall[4]) and
+      (wall[1] >= body:L()) and 
+      (body:L() >= (wall[1] + body.dx)) then -- dx is NEGATIVE!!!!
+      body.x = wall[1] + body.width/2
+      return true
+   end
+end
+
+
+function collide_right(body, wall)
+   if body.v_x < 0 then return false end
+   if not (body:T() <= wall[2]) and
+      not (body:B() >= wall[4]) and
+      (wall[1] <= body:R()) and 
+      (body:R() <= (wall[1] + body.dx)) then
+      body.x = wall[1] - body.width/2
+      return true
+   end
+end
+
 
 function collide_walls(body, walls)
    for i,wall in ipairs(walls)     do
@@ -94,3 +88,24 @@ function collide_walls(body, walls)
    end
 end
 
+---- SLOPES ----
+function collide_slope(body, slope)
+   if body.v_y > 0 then return false end
+   m = (slope[4]-slope[2])/(slope[3]-slope[1])
+   b = slope[2] + m*(body.x-slope[1]) -- y value of the slope
+   if not (body:R() <= slope[1]) and
+      not (body:L() >= slope[3])   and
+      (b >= body:B())              and
+      (body:B() >= (b + p.dy - math.abs(p.dx))) then -- dy is NEGATIVE!!!!
+      body.y = b
+      return true
+  end
+end
+
+function collide_slopes(body, slopes)
+   for i,slope in ipairs(slopes)  do
+      if collide_slope(body, slope) then
+	 return true
+      end
+   end
+end

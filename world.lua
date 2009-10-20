@@ -11,11 +11,21 @@ w = {
 
    lines = {
    -- A horizontal line
-   {10, 5, 20, 5},
+   {10.0, 5.0, 20.0, 5.0},
    -- A vertical line
-   {10, 5, 10, 20}, 
+   {10.0, 5.0, 10.0, 20.0}, 
+   {10.0, 20.0, 20.0, 20.0},
+   {20.0, 5.0, 20.0, 20.0},
+
+   -- A sloped line
+   {20.0, 20.0, 22.0, 22.0},
+   -- continued...
+   {22.0, 22.0, 30.0, 23.0},
+   {30.0, 23.0, 35.0, 20.0},
+   {35.0, 20.0, 50.0, 20.0},
 },
 
+g = -100, -- gravity
 
    draw = function(s) 
 	     for i,line in ipairs(s.lines) do
@@ -26,6 +36,8 @@ w = {
 }
 
 -- These filter the w.lines into the 3 primary collision types
+-- THESE NEED TO ADD LOGIC FOR "NORMALIZING" THE ORDER OF THE
+-- COORDINATES
 function get_walls(lines)
    result = {}
    for i, w in ipairs(lines) do
@@ -52,7 +64,7 @@ function get_slopes(lines)
    result = {}
    for i, w in ipairs(lines) do
       -- If the X and Y of both points are different
-      if (not w[1] == w[3]) and (not w[2] == w[4]) then
+      if (not (w[1] == w[3])) and (not (w[2] == w[4])) then
 	 table.insert(result, w)
       end
    end

@@ -1,3 +1,5 @@
 
 
-message =  "hi"..p:L()
+message =  "test"
+
+function debug_point(x,y)  message = "("..x..", "..y..")" end
