@@ -39,8 +39,9 @@ update = function(s, dt)
 	    -- Move this to before collisions?
 	    s.v_y = s.v_y + w.g * dt
 	    s.v_y = terminal_velocity(s.v_y)
+	    s.dx = s.v_x * dt; V[1] = V[1] + s.dx
 	    s.dy = s.v_y * dt
-	    s:move(0, s.dy)
+	    s:move(s.dx, s.dy)
 
 	    if collide_platforms(s, w.platforms) then
 	       s.dv_y = 0
@@ -49,26 +50,18 @@ update = function(s, dt)
 	       message = "plat"
 	    end
 
-	    if collide_slopes(s, w.slopes) then
-	       s.dv_y = 0
-	       s.v_y = 0
-	       s.dy  = 0
-	       message = "slope"
-	    end
-
-
-	    s.dx = s.v_x * dt; 
-	    s:move(s.dx, 0)
-	    
 	    if collide_walls(s, w.walls) then
 	       s.v_x = 0
 	       s.dx  = 0
 	       message = "wall"
 	    end
 
-	    -- Move Camera (center on player's X coordinate)
-	    V[1] = p.x - love.graphics.getWidth()*Units_Per_Pixel/2
-
+	    if collide_slopes(s, w.slopes) then
+	       s.dv_y = 0
+	       s.v_y = 0
+	       s.dy  = 0
+	       message = "slope"
+	    end
 
 -- update animation
 	    anims.walk:update(dt)
