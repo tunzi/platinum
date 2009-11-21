@@ -21,6 +21,10 @@ heading = 1, -- moving left or right?
 right = 1,
 left = -1,
 
+collided_w, -- Currently colliding with wall
+collided_p, -- Currently colliding with platform
+collided_s, -- Currently colliding with slope
+
 -- Player Rect
 -- defined by 4 params:
    --Left  (x coordinate)
@@ -33,34 +37,46 @@ left = -1,
     B = function(s) return s.y end,
 
 update = function(s, dt)
+	    message = " " -- DEBUG
 
 	    -- Main movement occurs here 
-	    -- Need to add acceleration too?
-	    -- Move this to before collisions?
-	    s.v_y = s.v_y + w.g * dt
+	    -- Order of updating position and colliding is important
+
+	    s.v_y = s.v_y + w.g * dt	    
 	    s.v_y = terminal_velocity(s.v_y)
 	    s.dy = s.v_y * dt
 	    s:move(0, s.dy)
 
-	    if collide_platforms(s, w.platforms) then
-	       s.dv_y = 0
-	       s.v_y = 0
-	       s.dy  = 0
-	       message = "plat"
-	    end
-
-	    if collide_slopes(s, w.slopes) then
-	       s.dv_y = 0
-	       s.v_y = 0
-	       s.dy  = 0
+	    s.collided_s = collide_slopes(s, w.slopes)
+	    if s.collided_s then
+	       s.y = s.y - s.collided_s
+	       -- These make you "ramp" if you move fast enough
+	       -- HAHA
+	       s.dy = floor(s.dy-s.collided_s)
+	       s.v_y = floor(s.dy/dt)
+	       s.dv_y  = 0
 	       message = "slope"
 	    end
 
+	    s.collided_p = collide_platforms(s, w.platforms)
+	    if s.collided_p then
+	       s.y = s.y - s.collided_p
+	       s.dy  = 0
+	       s.v_y = 0
+	       s.dv_y = 0
+	       message = "plat"
+	    else
 
+	    end
+
+	    -- If all of the position updating and colliding are
+	    -- grouped together, it can cause corner catching issues
 	    s.dx = s.v_x * dt; 
 	    s:move(s.dx, 0)
-	    
-	    if collide_walls(s, w.walls) then
+
+	    s.collided_w = collide_walls(s, w.walls)
+	    if s.collided_w then
+	       s.x = s.x + s.collided_w
 	       s.v_x = 0
 	       s.dx  = 0
 	       message = "wall"
@@ -68,7 +84,6 @@ update = function(s, dt)
 
 	    -- Move Camera (center on player's X coordinate)
 	    V[1] = p.x - love.graphics.getWidth()*Units_Per_Pixel/2
-
 
 -- update animation
 	    anims.walk:update(dt)
@@ -96,5 +111,13 @@ function terminal_velocity(x)
    if a < max_vel then
       return x else
       return max_vel * x/a -- vel * sign
+   end
+end
+
+function floor(x)
+   if x > 0 then 
+      return x 
+   else 
+      return 0 
    end
 end

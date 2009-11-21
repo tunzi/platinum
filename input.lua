@@ -18,20 +18,22 @@ function input()
 --   end
 
    if isDown(love.key_left) then
-      V[1] = V[1] - .1
+      p.v_x = -20
+      p.heading = p.left
    end
 
    if isDown(love.key_right) then
-      V[1] = V[1] + .1
+      p.v_x = 20
+      p.heading = p.right
    end
 
    if isDown(love.key_d) then
-      p.v_x = 10
+      p.v_x = 20
       p.heading = p.right
    end
 
    if isDown(love.key_a) then
-      p.v_x = -10
+      p.v_x = -20
       p.heading = p.left
    end
 
@@ -47,8 +49,8 @@ function input()
       p.v_x = 0
    end
 
-   if isDown(love.key_space) and
-      p.dy == 0 then
+   if isDown(love.key_space) 
+   and (p.collided_w or p.collided_p or p.collided_s) then
       message = "space"
       p.v_y = 30
    end
