@@ -28,12 +28,12 @@ function input()
    end
 
    if isDown(love.key_d) then
-      p.v_x = 20
+      p.v_x = 10
       p.heading = p.right
    end
 
    if isDown(love.key_a) then
-      p.v_x = -20
+      p.v_x = -10
       p.heading = p.left
    end
 

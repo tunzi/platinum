@@ -86,7 +86,7 @@ update = function(s, dt)
 	    V[1] = p.x - love.graphics.getWidth()*Units_Per_Pixel/2
 
 -- update animation
-	    anims.walk:update(dt)
+--	    anims.walk:update(dt)
 
 	 end,
 
@@ -99,9 +99,9 @@ draw = function(s)
      love.graphics.rectangle(love.draw_line, draw_X(s:L()), draw_Y(s:T()),
      				      s.width*Pixels_Per_Unit, 
 	      			      s.height*Pixels_Per_Unit)
-     love.graphics.draw(anims.walk, draw_X(s.x), 
-			draw_Y(s.y)-anims.walk:getHeight()/2, 
-			0, s.heading, 1)
+--     love.graphics.draw(anims.walk, draw_X(s.x), 
+--			draw_Y(s.y)-anims.walk:getHeight()/2, 
+--			0, s.heading, 1)
 end,
 }
 

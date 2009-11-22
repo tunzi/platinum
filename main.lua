@@ -12,7 +12,8 @@ function draw_Y(y) return love.graphics.getHeight() - (y-V[2])*Pixels_Per_Unit e
 require("box.lua")
 require("player.lua")  -- defines "p", the main player object
 require("world.lua")
-anims = {}
+require("stage1.lua")
+w:populate(world_data)
 
 -- Viewport vector (put into seperate "screen.lua" ?)
 V = {0,0}
@@ -31,7 +32,7 @@ function load()
    img_stand = love.graphics.newImage("resources/zerostand.png")
    V[1] = p.x - love.graphics.getWidth()*Units_Per_Pixel/2
 
-   anims.walk = love.graphics.newAnimation(img_walk, 36, 43, 0.1)
+--   anims.walk = love.graphics.newAnimation(img_walk, 36, 43, 0.1)
 
 --DEBUG
    font = love.graphics.newFont(love.default_font, 12)
