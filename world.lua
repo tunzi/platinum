@@ -70,7 +70,6 @@ function get_slopes(paths)
 	    and not (point[2] == last_point[2]) then
 	       table.insert(result, {last_point[1], last_point[2], 
 				     point[1], point[2]})
-	       print "slope"
 	    end
 	 end
       end
