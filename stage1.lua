@@ -1,4 +1,9 @@
 
+t = {{0,0}}
+math.randomseed(os.time())
+for i=1,1000 do
+   table.insert(t, {i*10, (t[i][2]*.9+math.random(55)*.1)})
+end
 
 world_data = {
    paths = {
@@ -17,3 +22,5 @@ world_data = {
 --   {35.0, 20.0, 50.0, 20.0},
    },
 }
+
+table.insert(world_data.paths, t)

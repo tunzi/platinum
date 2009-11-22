@@ -83,7 +83,7 @@ update = function(s, dt)
 	    end
 
 	    -- Move Camera (center on player's X coordinate)
-	    V[1] = p.x - love.graphics.getWidth()*Units_Per_Pixel/2
+	    V[1] = p.x - w.width/2
 
 -- update animation
 --	    anims.walk:update(dt)
@@ -97,8 +97,8 @@ move = function(s, x, y)
 
 draw = function(s)
      love.graphics.rectangle(love.draw_line, draw_X(s:L()), draw_Y(s:T()),
-     				      s.width*Pixels_Per_Unit, 
-	      			      s.height*Pixels_Per_Unit)
+			     s.width*love.graphics.getWidth()/w.width,
+			     s.height*love.graphics.getHeight()/w.height)
 --     love.graphics.draw(anims.walk, draw_X(s.x), 
 --			draw_Y(s.y)-anims.walk:getHeight()/2, 
 --			0, s.heading, 1)

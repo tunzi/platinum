@@ -1,15 +1,16 @@
 --Globals
-Pixels_Per_Unit = 10
-Units_Per_Pixel = 1/Pixels_Per_Unit
 
 -- These functions account for the descrepancy between 'drawing
 -- coordinates' (pixels) and 'physical coordinates' (meters/units)c
-function draw_X(x) return (x-V[1])*Pixels_Per_Unit end
-function draw_Y(y) return love.graphics.getHeight() - (y-V[2])*Pixels_Per_Unit end
+function draw_X(x) 
+   return (x-V[1])*love.graphics.getWidth()/w.width 
+end
+function draw_Y(y) 
+   return (1 - (y-V[2])/w.height) * love.graphics.getHeight()
+end
 
 
 -- Global Objects
-require("box.lua")
 require("player.lua")  -- defines "p", the main player object
 require("world.lua")
 require("stage1.lua")
@@ -30,7 +31,7 @@ function load()
    -- Load Resources
    img_walk = love.graphics.newImage("resources/zerowalk.png")
    img_stand = love.graphics.newImage("resources/zerostand.png")
-   V[1] = p.x - love.graphics.getWidth()*Units_Per_Pixel/2
+   V[1] = p.x - w.width/2
 
 --   anims.walk = love.graphics.newAnimation(img_walk, 36, 43, 0.1)
 

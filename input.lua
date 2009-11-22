@@ -18,12 +18,12 @@ function input()
 --   end
 
    if isDown(love.key_left) then
-      p.v_x = -20
+      p.v_x = -100
       p.heading = p.left
    end
 
    if isDown(love.key_right) then
-      p.v_x = 20
+      p.v_x = 100
       p.heading = p.right
    end
 

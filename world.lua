@@ -7,12 +7,12 @@
 -- World Object List
 w = {}
 w.g = -100 -- gravity
-
-
+w.width = 80
+w.height = w.width*3/4
    -- Draw all collidable lines
 w.draw = function(s) 
-	    for j,path in ipairs(s.paths) do
-	       for i, point in ipairs(path) do
+	    for j,path in pairs(s.paths) do
+	       for i, point in pairs(path) do
 		  if not (i==1) then
 		     last_point = path[i-1]
 		     love.graphics.line(draw_X(last_point[1]), 
