@@ -3,10 +3,10 @@
 -- These functions account for the descrepancy between 'drawing
 -- coordinates' (pixels) and 'physical coordinates' (meters/units)c
 function draw_X(x) 
-   return (x-V[1])*love.graphics.getWidth()/w.width 
+   return (x-V[1])*love.graphics.getWidth()/w.screen_width 
 end
 function draw_Y(y) 
-   return (1 - (y-V[2])/w.height) * love.graphics.getHeight()
+   return (1 - (y-V[2])/w.screen_height) * love.graphics.getHeight()
 end
 
 
@@ -31,7 +31,7 @@ function load()
    -- Load Resources
    img_walk = love.graphics.newImage("resources/zerowalk.png")
    img_stand = love.graphics.newImage("resources/zerostand.png")
-   V[1] = p.x - w.width/2
+   V[1] = p.x - w.screen_width/2
 
 --   anims.walk = love.graphics.newAnimation(img_walk, 36, 43, 0.1)
 

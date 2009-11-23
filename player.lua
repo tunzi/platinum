@@ -38,7 +38,6 @@ collided_s, -- Currently colliding with slope
 
 update = function(s, dt)
 	    message = " " -- DEBUG
-
 	    -- Main movement occurs here 
 	    -- Order of updating position and colliding is important
 
@@ -47,7 +46,7 @@ update = function(s, dt)
 	    s.dy = s.v_y * dt
 	    s:move(0, s.dy)
 
-	    s.collided_s = collide_slopes(s, w.slopes)
+	    s.collided_s = collide_slopes(s, w.active.slopes)
 	    if s.collided_s then
 	       s.y = s.y - s.collided_s
 	       -- These make you "ramp" if you move fast enough
@@ -58,7 +57,7 @@ update = function(s, dt)
 	       message = "slope"
 	    end
 
-	    s.collided_p = collide_platforms(s, w.platforms)
+	    s.collided_p = collide_platforms(s, w.active.platforms)
 	    if s.collided_p then
 	       s.y = s.y - s.collided_p
 	       s.dy  = 0
@@ -74,7 +73,7 @@ update = function(s, dt)
 	    s.dx = s.v_x * dt; 
 	    s:move(s.dx, 0)
 
-	    s.collided_w = collide_walls(s, w.walls)
+	    s.collided_w = collide_walls(s, w.active.walls)
 	    if s.collided_w then
 	       s.x = s.x + s.collided_w
 	       s.v_x = 0
@@ -83,7 +82,9 @@ update = function(s, dt)
 	    end
 
 	    -- Move Camera (center on player's X coordinate)
-	    V[1] = p.x - w.width/2
+	    V[1] = p.x - w.screen_width/2
+	    active_segment_index = math.floor(p.x/w.screen_width*2 + 1)
+	    w.active = w.segments[active_segment_index]
 
 -- update animation
 --	    anims.walk:update(dt)
@@ -96,9 +97,10 @@ move = function(s, x, y)
        end,
 
 draw = function(s)
-     love.graphics.rectangle(love.draw_line, draw_X(s:L()), draw_Y(s:T()),
-			     s.width*love.graphics.getWidth()/w.width,
-			     s.height*love.graphics.getHeight()/w.height)
+	  love.graphics.setColor(255,255,255)
+	  love.graphics.rectangle(love.draw_line, draw_X(s:L()), draw_Y(s:T()),
+			     s.width*love.graphics.getWidth()/w.screen_width,
+			     s.height*love.graphics.getHeight()/w.screen_height)
 --     love.graphics.draw(anims.walk, draw_X(s.x), 
 --			draw_Y(s.y)-anims.walk:getHeight()/2, 
 --			0, s.heading, 1)

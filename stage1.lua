@@ -1,11 +1,12 @@
 
 t = {{0,0}}
 math.randomseed(os.time())
-for i=1,1000 do
+for i=1, 500 do
    table.insert(t, {i*10, (t[i][2]*.9+math.random(55)*.1)})
 end
 
 world_data = {
+   width = 5000,
    paths = {
    -- A horizontal line
       {{10.0, 5.0}, {20.0, 5.0}},
